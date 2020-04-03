@@ -1,2 +1,8 @@
 # bel2pyro
-Graphical model implementation for doing causal inference on networks represented by BEL statements
+Graphical model implementation for doing causal inference on networks represented by BEL statements.
+
+The (work-in-progress) code in this repo is designed to take a set of BEL statements that have been stored in a pyBEL network and produce a causal graphical model; it can also generate the causal graph from a list of BEL statements represented as strings.  Given a set of ternary input data (up-regulated, down-regulated, or unchanged), the code generates unconditioned distributions on all exogeneous variables (i.e., nodes without parents) and conditional distributions for all other nodes with respect to their respective parents.
+
+There are two implementations: one in pytorch and one in pyro.  Using the input data to generate the various distributions described above, the pytorch implementation can analytically calculate desired joint and conditional distributions as well as the distributions associated with do-statements.  It can also generate joint samples from the original distribution.  There are functions for analytically calculating Total Effect, Natural Direct Effect, Controlled Direct Effect, and Natural Indirect Effect, but those functions have not yet been debugged.  This code has not been optimized for computational efficiency and thus may not scale well to very large causal graphs.
+
+The pyro implementation leverages pyro's built-in functions to generate (joint) samples based on conditional and do-statements.  There is also a function for producing samples based on counterfactual statements.  These functions do not produce analytical representations of the probability distributions, but they could be used to produce empirical distributions.  This code may scale better to larger graphical models.
